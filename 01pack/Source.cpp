@@ -237,45 +237,80 @@
 
 
 /*最长回文子串-dp*/
-using namespace std;
-const int N = 1010;
+//using namespace std;
+//const int N = 1010;
+//
+//string str;
+//bool f[N][N];
+//int ans = 1;
+//int l = 0, r = 0;
+//
+//int main()
+//{
+//	cin >> str;
+//
+//	for (int i = str.size() - 1; i >= 0; i--)
+//	{
+//		for (int j = i; j < str.size(); j++)
+//		{
+//			if (i == j) f[i][j] = true;
+//			else if (i + 1 == j) f[i][j] = (str[i] == str[j]);
+//			else f[i][j] = (f[i + 1][j - 1] && str[i] == str[j]);
+//			if (f[i][j]) ans = max(ans, j - i + 1);
+//		}
+//	}
+//
+//	for (int i = str.size(); i >= 0; i--)
+//	{
+//		for (int j = i; j < str.size(); j++)
+//		{
+//			if (f[i][j] && j - i + 1 == ans)
+//			{
+//				l = i;
+//				r = j;
+//				break;
+//			}
+//		}
+//		if (0 != l) break;
+//	}
+//
+//	cout << ans << " " << str.substr(l, ans);
+//	cin.get();
+//}
 
+
+/*最长回文子序列-dp*/
+using namespace std;
+
+const int N = 1010;
 string str;
-bool f[N][N];
-int ans = 1;
-int l = 0, r = 0;
+int dp[N][N];
 
 int main()
 {
 	cin >> str;
+	int lenStr = str.length();
 
-	for (int i = str.size(); i > 0; i--)
+	//for (int len = 1; len <= lenStr; len++)
+	//{
+	//	for (int i = 0; i + len < lenStr; i++)
+	//	{
+	//		int j = i + len;
+	//		if (str[i] == str[j]) dp[i][j] = dp[i + 1][j - 1] + 2;
+	//		else dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+	//	}
+	//}
+	
+	for (int i = lenStr - 1; i >= 0; i--)
 	{
-		for (int j = i; j <= str.size(); j++)
+		dp[i][i] = 1;
+		for (int j = i + 1; j < lenStr; j++)
 		{
-			if (i == j) f[i][j] = true;
-			else if (i + 1 == j) f[i][j] = (str[i + 1] == str[j - 1]);
-			else f[i][j] = (f[i - 1][j - 1] && str[i + 1] == str[j - 1]);
-			if (f[i][j]) ans = max(ans, j - i + 1);
+			if (str[i] == str[j]) dp[i][j] = dp[i + 1][j - 1] + 2;
+			else dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
 		}
 	}
 
-	for (int i = str.size(); i > 0; i--)
-	{
-		for (int j = 1; j <= str.size(); j++)
-		{
-			if (f[i][j] && j - i + 1 == ans)
-			{
-				l = i;
-				r = j;
-				break;
-			}
-		}
-	}
-
-	cout << ans << " " << str.substr(l, r);
+	cout << dp[0][lenStr - 1] << endl;
 	cin.get();
 }
-
-
-/*最长回文子序列-dp*/
