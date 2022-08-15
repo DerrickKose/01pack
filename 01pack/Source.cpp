@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <string>
 
 /*朴素方法*/
 //const int N = 1010;
@@ -209,27 +210,72 @@
 //}
 
 
-/*最长公共子序列*/
+///*最长公共子序列*/
+//using namespace std;
+//const int N = 1010;
+//
+//int n, m;
+//char a[N], b[N];
+//int f[N][N];
+//
+//int main()
+//{
+//	cin >> n >> m >> a + 1 >> b + 1;
+//
+//	for (int i = 1; i <= n; i++)
+//	{
+//		for (int j = 1; j <= m; j++)
+//		{
+//			f[i][j] = max(f[i - 1][j], f[i][j - 1]);
+//			if (a[i] == b[j])
+//				f[i][j] = max(f[i][j], f[i - 1][j - 1] + 1);
+//		}
+//	}
+//
+//	cout << f[n][m] << endl;
+//}
+
+
+/*最长回文子串-dp*/
 using namespace std;
 const int N = 1010;
 
-int n, m;
-char a[N], b[N];
-int f[N][N];
+string str;
+bool f[N][N];
+int ans = 1;
+int l = 0, r = 0;
 
 int main()
 {
-	cin >> n >> m >> a + 1 >> b + 1;
+	cin >> str;
 
-	for (int i = 1; i <= n; i++)
+	for (int i = str.size(); i > 0; i--)
 	{
-		for (int j = 1; j <= m; j++)
+		for (int j = i; j <= str.size(); j++)
 		{
-			f[i][j] = max(f[i - 1][j], f[i][j - 1]);
-			if (a[i] == b[j])
-				f[i][j] = max(f[i][j], f[i - 1][j - 1] + 1);
+			if (i == j) f[i][j] = true;
+			else if (i + 1 == j) f[i][j] = (str[i + 1] == str[j - 1]);
+			else f[i][j] = (f[i - 1][j - 1] && str[i + 1] == str[j - 1]);
+			if (f[i][j]) ans = max(ans, j - i + 1);
 		}
 	}
 
-	cout << f[n][m] << endl;
+	for (int i = str.size(); i > 0; i--)
+	{
+		for (int j = 1; j <= str.size(); j++)
+		{
+			if (f[i][j] && j - i + 1 == ans)
+			{
+				l = i;
+				r = j;
+				break;
+			}
+		}
+	}
+
+	cout << ans << " " << str.substr(l, r);
+	cin.get();
 }
+
+
+/*最长回文子序列-dp*/
