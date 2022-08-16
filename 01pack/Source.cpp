@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
+#include <vector>
 
 /*朴素方法*/
 //const int N = 1010;
@@ -280,37 +281,75 @@
 
 
 /*最长回文子序列-dp*/
-using namespace std;
+//using namespace std;
+//
+//const int N = 1010;
+//string str;
+//int dp[N][N];
+//
+//int main()
+//{
+//	cin >> str;
+//	int lenStr = str.length();
+//
+//	//for (int len = 1; len <= lenStr; len++)
+//	//{
+//	//	for (int i = 0; i + len < lenStr; i++)
+//	//	{
+//	//		int j = i + len;
+//	//		if (str[i] == str[j]) dp[i][j] = dp[i + 1][j - 1] + 2;
+//	//		else dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+//	//	}
+//	//}
+//	
+//	for (int i = lenStr - 1; i >= 0; i--)
+//	{
+//		dp[i][i] = 1;
+//		for (int j = i + 1; j < lenStr; j++)
+//		{
+//			if (str[i] == str[j]) dp[i][j] = dp[i + 1][j - 1] + 2;
+//			else dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+//		}
+//	}
+//
+//	cout << dp[0][lenStr - 1] << endl;
+//	cin.get();
+//}
 
-const int N = 1010;
-string str;
-int dp[N][N];
+
+
+/*最大子数组和-dp*/
+ //只求最大值
+using namespace std;
+int dp[1010];
+vector<int> nums;
+int tmp, l, r, tmpl;
 
 int main()
 {
-	cin >> str;
-	int lenStr = str.length();
-
-	//for (int len = 1; len <= lenStr; len++)
-	//{
-	//	for (int i = 0; i + len < lenStr; i++)
-	//	{
-	//		int j = i + len;
-	//		if (str[i] == str[j]) dp[i][j] = dp[i + 1][j - 1] + 2;
-	//		else dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
-	//	}
-	//}
-	
-	for (int i = lenStr - 1; i >= 0; i--)
+	while (true)
 	{
-		dp[i][i] = 1;
-		for (int j = i + 1; j < lenStr; j++)
-		{
-			if (str[i] == str[j]) dp[i][j] = dp[i + 1][j - 1] + 2;
-			else dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
-		}
+		cin >> tmp;
+		nums.push_back(tmp);
+		if (cin.get() == '\n') break;
+	}
+	//nums = { 5,4,-1,7,8 };
+
+	int nlen = nums.size();
+	int ans = nums[0];
+	dp[0] = nums[0];
+	for (int i = 1; i < nlen; i++)
+	{
+		if (dp[i - 1] > 0)
+			dp[i] = nums[i] + dp[i - 1];
+		else
+			tmpl = i, dp[i] = nums[i];
+
+		if (ans < dp[i]) ans = dp[i], r = i, l = tmpl;
 	}
 
-	cout << dp[0][lenStr - 1] << endl;
+	cout << ans << ' ' << nums[l] << ' ' << nums[r] << endl;
+
 	cin.get();
 }
+
