@@ -363,13 +363,14 @@ using namespace std;
 int tmp;
 vector<int> input;
 
-int createDP(vector<int>& inputNum) {
-	vector<int> dp(inputNum.size(), 0);
-	dp[1] = max(inputNum[0], inputNum[1]);
-	for (int i = 2; i < inputNum.size(); i++) {
-		dp[i] = max(dp[i - 1], dp[i - 2] + inputNum[i]);
+int createDP(vector<int>& nums, int start, int end) {
+	vector<int> dp(end - start + 1, 0);
+	dp[0] = nums[start];
+	dp[1] = max(nums[start], nums[start + 1]);
+	for (int i = 2; i < dp.size(); i++) {
+		dp[i] = max(dp[i - 1], dp[i - 2] + nums[start + i]);
 	}
-	return dp[inputNum.size() - 1];
+	return dp[dp.size() - 1];
 }
 
 int main()
@@ -404,12 +405,7 @@ int main()
 
 		//cout << max(dp[0][len - 2], dp[1][len - 1]);
 
-		vector<int> inputNum1, inputNum2;
-		for (int i = 0; i < len; i++) {
-			if (i != len - 1) inputNum1.emplace_back(input[i]);
-			if (i != 0) inputNum2.emplace_back(input[i]);
-		}
-		cout << max(createDP(inputNum1), createDP(inputNum2));
+		cout << max(createDP(input, 0, input.size() - 2), createDP(input, 1, input.size() - 1));
 	}
 
 	cin.get();
