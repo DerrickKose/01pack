@@ -318,38 +318,99 @@
 
 
 
-/*最大子数组和-dp*/
- //只求最大值
+///*最大子数组和-dp*/
+// //只求最大值
+//using namespace std;
+//int dp[1010];
+//vector<int> nums;
+//int tmp, l, r, tmpl;
+//
+//int main()
+//{
+//	while (true)
+//	{
+//		cin >> tmp;
+//		nums.push_back(tmp);
+//		if (cin.get() == '\n') break;
+//	}
+//	//nums = { 5,4,-1,7,8 };
+//
+//	int nlen = nums.size();
+//	int ans = nums[0];
+//	dp[0] = nums[0];
+//	for (int i = 1; i < nlen; i++)
+//	{
+//		if (dp[i - 1] > 0)
+//			dp[i] = nums[i] + dp[i - 1];
+//		else
+//			tmpl = i, dp[i] = nums[i];
+//
+//		if (ans < dp[i]) ans = dp[i], r = i, l = tmpl;
+//	}
+//
+//	cout << ans << ' ' << nums[l] << ' ' << nums[r] << endl;
+//
+//	cin.get();
+//}
+
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
-int dp[1010];
-vector<int> nums;
-int tmp, l, r, tmpl;
+int tmp;
+vector<int> input;
+
+int createDP(vector<int>& inputNum) {
+	vector<int> dp(inputNum.size(), 0);
+	dp[1] = max(inputNum[0], inputNum[1]);
+	for (int i = 2; i < inputNum.size(); i++) {
+		dp[i] = max(dp[i - 1], dp[i - 2] + inputNum[i]);
+	}
+	return dp[inputNum.size() - 1];
+}
 
 int main()
 {
-	while (true)
-	{
+	while (true) {
 		cin >> tmp;
-		nums.push_back(tmp);
+		input.emplace_back(tmp);
 		if (cin.get() == '\n') break;
 	}
-	//nums = { 5,4,-1,7,8 };
 
-	int nlen = nums.size();
-	int ans = nums[0];
-	dp[0] = nums[0];
-	for (int i = 1; i < nlen; i++)
-	{
-		if (dp[i - 1] > 0)
-			dp[i] = nums[i] + dp[i - 1];
-		else
-			tmpl = i, dp[i] = nums[i];
-
-		if (ans < dp[i]) ans = dp[i], r = i, l = tmpl;
+	int len = input.size();
+	if (len < 3) cout << 0;
+	else if (len == 3) {
+		auto maxNum = max_element(input.begin(), input.end());
+		cout << *maxNum;
 	}
+	else if (len > 3) {
+		//vector<vector<int>> dp(len, vector<int>(len, 0));
+		//for (int i = 0; i < len; i++) {
+		//	dp[i][i] = input[i];
+		//}
+		//for (int i = 0; i < len - 2; i++) {
+		//	for (int j = i + 2; j < len; j++) {
+		//		dp[i][j] = max(dp[i][j], dp[i + 1][j - 1]);
+		//		if (j - i >= 4) dp[i][j] = max(dp[i + 2][j - 2] + input[i] + input[j], dp[i][j]);
+		//		else if (j - i >= 3) {
+		//			dp[i][j] = max(dp[i][j], dp[i + 1][j - 2] + input[j]);
+		//			dp[i][j] = max(dp[i][j], dp[i + 2][j - 1] + input[i]);
+		//		}
+		//	}
+		//}
 
-	cout << ans << ' ' << nums[l] << ' ' << nums[r] << endl;
+		//cout << max(dp[0][len - 2], dp[1][len - 1]);
+
+		vector<int> inputNum1, inputNum2;
+		for (int i = 0; i < len; i++) {
+			if (i != len - 1) inputNum1.emplace_back(input[i]);
+			if (i != 0) inputNum2.emplace_back(input[i]);
+		}
+		cout << max(createDP(inputNum1), createDP(inputNum2));
+	}
 
 	cin.get();
 }
-
